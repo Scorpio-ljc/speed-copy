@@ -15,8 +15,21 @@ export const useMainStore = defineStore('main', () => {
     const socketUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:3000'
     socket = io(socketUrl, {
       transports: ['websocket', 'polling'],
-      path: '/socket.io'
+      path: '/socket.io',
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      timeout: 20000
     })
+
+    socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error)
+    })
+
+    socket.on('connect', () => {
+      console.log('Socket connected successfully')
+    })
+
     socket.on('init', (data) => {
       code.value = data.code
       language.value = data.language
