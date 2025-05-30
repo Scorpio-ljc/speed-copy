@@ -33,7 +33,7 @@ const showTip = ref(false)
 
 function save() {
   store.publish()
-  store.code.value = ''
+  store.code = ''
   showTip.value = true
   setTimeout(() => showTip.value = false, 1500)
 }

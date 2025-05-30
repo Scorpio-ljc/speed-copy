@@ -12,7 +12,11 @@ export const useMainStore = defineStore('main', () => {
   let socket
 
   function connect() {
-    socket = io()
+    const socketUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:3000'
+    socket = io(socketUrl, {
+      transports: ['websocket', 'polling'],
+      path: '/socket.io'
+    })
     socket.on('init', (data) => {
       code.value = data.code
       language.value = data.language
